@@ -1,0 +1,68 @@
+using System;
+using System.Linq;
+
+namespace Combinatorics
+{
+    class Program
+    {
+        static long Permuntation(int n)
+        {
+            if (n == 0)
+            {
+                return 1;
+            }
+            else return n * Permuntation(n - 1);
+        }
+
+        static long Variation(int k, int n)
+        {
+            long v = 1;
+            for (int i = n; i >= n - k + 1; i--)
+            {
+                v *= i;
+            }
+            return v;
+        }
+
+        static long Combination(int k, int n)
+        {
+            return Variation(k, n) / Permuntation(k);
+        }
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                long calc = 0;
+                string line = Console.ReadLine().ToUpper();
+                if (line == "END")
+                {
+                    break;
+                }
+                
+                string[] arr = line.Split(new char[] {')', ',', '('}).ToArray();
+
+                if (arr[0]=="P")
+                {
+                    int n = int.Parse(arr[1]);
+                   calc =  Permuntation(n);
+                }
+                else if (arr[0] == "V")
+                {
+                    int k  = int.Parse(arr[1]);
+                    int n  = int.Parse(arr[2]);
+                    calc = Variation(k, n);
+                }
+                else if (arr[0] == "C")
+                {
+                    int k = int.Parse(arr[1]);
+                    int n = int.Parse(arr[2]);
+                    calc = Combination(k, n);
+                }
+
+                Console.WriteLine(calc);
+            }
+
+        }
+    }
+}
