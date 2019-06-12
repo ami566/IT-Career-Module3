@@ -1,0 +1,95 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MergeArrays
+{
+    class Program
+    {
+        static List<int> Sort(List<int> list)
+        {
+            if (list.Count == 1)
+            {
+                return list;
+            }
+            else if (list.Count == 2)
+            {
+                if (list[0] > list[1])
+                {
+                    int bucket = list[0];
+                    list[0] = list[1];
+                    list[1] = bucket;
+                }
+                return list;
+            }
+            else
+            {
+                List<int> firstList = new List<int>();
+                List<int> secondList = new List<int>();
+
+                for (int i = 0; i < (list.Count+1)/2; i++)
+                {
+                    firstList.Add(list[i]);
+                }
+                for (int i = (list.Count + 1) / 2; i < list.Count; i++)
+                {
+                    secondList.Add(list[i]);
+                }
+                firstList = Sort(firstList);
+                secondList = Sort(secondList);
+
+                List<int> mergedList = Merge(firstList, secondList);
+                return mergedList;
+            }
+        }
+
+        static List<int> Merge(List<int> firstList, List<int> secondList)
+        {
+            List<int> mergedList = new List<int>();
+
+            int i = 0;
+            int j = 0;
+
+            while ((firstList.Count>i) || (j<secondList.Count))
+            {
+                if (firstList[i]<secondList[j])
+                {
+                    mergedList.Add(firstList[i]);
+                    i++;
+                    if (i==firstList.Count)
+                    {
+                        while (j<secondList.Count)
+                        {
+                            mergedList.Add(secondList[j]);
+                            j++;
+                        } break;
+                    }
+                }
+                else
+                {
+                    mergedList.Add(secondList[j]);
+                    j++;
+                    if (j == secondList.Count)
+                    {
+                        while (i < firstList.Count)
+                        {
+                            mergedList.Add(firstList[i]);
+                            i++;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            return mergedList;
+        }
+
+        static void Main()
+        {
+            List<int> inputList = Console.ReadLine().Split(' ').Select(int.Parse).ToList();
+            List<int> mergedList = Sort(inputList);
+
+            Console.WriteLine(string.Join(' ', mergedList));
+        }
+    }
+}
