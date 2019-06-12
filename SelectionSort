@@ -1,0 +1,46 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace SelectionSort
+{
+    class Program
+    {
+        static void Swap(int[] arr, int k, int i)
+        {
+            int bucket = arr[k];
+            arr[k] = arr[i];
+            arr[i] = bucket;
+        }
+
+        static int Less(int[] arr, int i)
+        {
+            int min = arr[i];
+            int k = i;
+
+            for (int j = i + 1; j < arr.Length; j++)
+            {
+                if (arr[j] < min)
+                {
+                    min = arr[j];
+                    k = j;
+                }
+            }
+
+            return k;
+        }
+
+        static void Main(string[] args)
+        { 
+            int[] arr = Console.ReadLine().Split(' ').Select(int.Parse).ToArray();
+
+            for (int i = 0; i < arr.Length-1; i++)
+            {
+                int k =  Less(arr, i);
+                Swap(arr, k, i);
+            }
+
+            Console.WriteLine(string.Join(" ", arr));
+        }
+    }
+}
