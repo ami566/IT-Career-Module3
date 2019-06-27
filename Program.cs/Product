@@ -1,0 +1,61 @@
+using System;
+
+using System.Collections.Generic;
+
+using System.Text;
+
+namespace Restaurant
+
+{
+
+    class Product
+
+    {
+
+        private string name;
+
+        private Product next;
+
+        public Product(string name)
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            this.Name = name;
+
+            this.next = null;
+
+        }
+
+        public string Name
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            set; get;
+
+        }
+
+        public Product Next
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            set; get;
+
+        }
+
+        public override string ToString()
+
+        {
+
+            return $"Product {this.Name}";
+
+        }
+
+    }
+
+}
