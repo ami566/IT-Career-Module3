@@ -1,0 +1,316 @@
+using System;
+
+using System.Collections.Generic;
+
+using System.Text;
+
+namespace Restaurant
+
+{
+
+    class Fridge
+
+    {
+
+        private Product head;
+
+        private Product tail;
+
+        private int count;
+
+        public Fridge() { }
+
+        public int Count
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            set; get;
+
+        }
+
+        public void AddProduct(string ProductName)
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            if (head == null)
+
+            {
+
+                Product first = new Product(ProductName);
+
+                head = first;
+
+                tail = first;
+
+            }
+
+            else
+
+            {
+
+                Product current = head;
+
+                while (current.Next != null)
+
+                {
+
+                    current = current.Next;
+
+                }
+
+                Product productToAdd = new Product(ProductName);
+
+                tail = productToAdd;
+
+                current.Next = tail;
+
+            }
+
+            this.Count++;
+
+        }
+
+        public string[] CookMeal(int start, int end)
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            Product currentProduct = head;
+
+            if (currentProduct == null)
+
+            {
+
+                return null;
+
+            }
+
+            int currentIndext = 0;
+
+            while (currentIndext < start)
+
+            {
+
+                currentProduct = currentProduct.Next;
+
+                currentIndext++;
+
+            }
+
+            string[] Meal = new string[Math.Min(Count-start, end - start)];//масивът да е с непразни елементи
+
+            for (int i = 0; i < Meal.Length; i++)
+
+            {
+
+                Meal[i] = currentProduct.Name;
+
+                currentProduct = currentProduct.Next;
+
+                if (currentProduct == null)
+
+                {
+
+                    break;
+
+                }
+
+            }
+
+            return Meal;
+
+        }
+
+        public string RemoveProductByIndex(int index)
+
+        {
+
+            //TODO: Добавете вашия код тук …
+
+            Product currentProduct = head;
+
+            Product prev = null;
+
+            int currentIndex = 0;
+
+            while (currentIndex < index)
+
+            {
+
+                prev = currentProduct;
+
+                currentProduct = currentProduct.Next;
+
+                currentIndex++;
+
+                if (currentProduct == null)
+
+                {
+
+                    return "";
+
+                }
+
+            }
+
+            if (currentProduct == head)
+
+            {
+
+                head = head.Next;
+
+            }
+
+            else if (currentProduct == tail)
+
+            {
+
+                prev.Next = null;
+
+                tail = prev;
+
+            }
+
+            else
+
+            {
+
+                prev.Next = prev.Next.Next;
+
+                //prev.Next=currentProduct.Next;
+
+            }
+
+            this.Count--;
+
+            return currentProduct.Name;
+
+        }
+
+        public string RemoveProductByName(string name)
+        {
+            Product currentProduct = head;
+            Product prev = null;
+
+            while (currentProduct.Name != name)
+            {
+                prev = currentProduct;
+                currentProduct = currentProduct.Next;
+
+                if (currentProduct == null)
+                {
+                    return "";
+                }
+            }
+
+            if (currentProduct == head)
+            {
+                head = head.Next;
+            }
+            else if (currentProduct == tail)
+            {
+                prev.Next = null;
+                tail = prev;
+            }
+            else
+            {
+                prev.Next = prev.Next.Next;
+                //prev.Next=currentProduct.Next;
+            }
+            this.Count--;
+            return currentProduct.Name;
+        }
+
+        public bool CheckProductIsInStock(string name)
+        {
+            //TODO: Добавете вашия код тук …
+            Product currentProduct = head;
+            Product prev = null;
+            while (currentProduct.Name != name)
+            {
+                prev = currentProduct;
+                currentProduct = currentProduct.Next;
+                if (currentProduct == null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public string[] ProvideInformationAboutAllProducts()
+        {
+            //TODO: Добавете вашия код тук …
+            string[] info = new string[this.Count];
+            Product currentProduct = head;
+            int currentIndex = 0;
+            while (currentProduct != null)
+            {
+                info[currentIndex] = currentProduct.ToString();//Добавка ToString()
+                currentProduct = currentProduct.Next; //беше изпуснато
+                currentIndex++;
+            }
+            return info;
+        }
+
+        public void AddProductAtIndex(Product productToAdd, int index)
+        {
+            //TODO: Добавете вашия код тук …
+            Product currentProduct = head;
+            Product prev = null;
+            int currentIndex = 0;
+            while (currentIndex < index)
+            {
+                prev = currentProduct;
+                currentProduct = currentProduct.Next;
+                currentIndex++;
+                if (currentProduct == null)
+                {
+                    throw new Exception("Position not exists");
+                }
+            }
+
+            if (currentProduct == head)
+
+            {
+
+                Product newHead = productToAdd;
+
+                newHead.Next = head;
+
+                head = newHead;
+
+            }
+
+            else if (currentProduct == tail)
+
+            {
+
+                tail = productToAdd;
+
+                currentProduct.Next = tail;
+
+            }
+
+            else
+
+            {
+
+                prev.Next = productToAdd;
+
+                productToAdd.Next = currentProduct;
+
+            }
+
+            this.Count++;
+
+        }
+
+    }
+
+}
