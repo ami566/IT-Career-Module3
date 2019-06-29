@@ -1,0 +1,190 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+
+namespace DynamicList
+{
+    public class DynamicList<T>
+    {
+        private Node<T> head = null;
+        private Node<T> tail = null;
+        private int Count = 0;
+
+        public int Count1 { get => Count; set => Count = value; }
+        internal Node<T> Head { get => head; set => head = value; }
+        internal Node<T> Tail { get => tail; set => tail = value; }
+
+        public DynamicList()
+        {
+            this.Head = null;
+            this.Tail = null;
+            this.Count = 0;
+        }
+
+        public void AddFirst(T element)
+        {
+            this.Head = new Node<T>(element);
+            this.Count++;
+
+        }
+
+        public void AddAfter(Node<T> nodeToAddAfter, T element)
+        {
+            Node<T> currentElement = head;
+            int currentIndex = 0;
+            while (!currentElement.Value.Equals(nodeToAddAfter))
+            {
+                if (currentIndex==this.Count)
+                {
+                    break;
+                }
+                currentElement = currentElement.Next;
+                currentIndex++;
+            }
+            Node<T> elementToAdd = new Node<T>(element);
+            elementToAdd.Next = currentElement.Next;
+            currentElement.Next = elementToAdd;
+        }
+
+        public void AddLast(T element)
+        {
+            this.Tail.Next = new Node<T>(element);
+            tail = tail.Next;
+            Count++;
+        }
+
+        public void Clear()
+        {
+            this.Head = null;
+            this.Tail = null;
+            this.Count = 0;
+        }
+
+        public void RemoveFirst(T element)
+        {
+            this.Head = head.Next;
+            this.Count--;
+        }
+
+        public void RemoveLast()
+        {
+            Node<T> currentElement = head;
+            Node<T> previous = null;
+            while (currentElement != tail)
+            {
+
+                previous = currentElement;
+                currentElement = currentElement.Next;
+            }
+            previous.Next = null;
+            previous = tail;
+            this.Count--;
+        }
+
+        public bool Remove(T elementToRemove)
+        {
+            Node<T> currentElement = head;
+            Node<T> previous = null;
+            while (currentElement != null)
+            {
+                if (currentElement.Equals(elementToRemove))
+                {
+                    previous.Next = currentElement.Next;
+                    this.Count--;
+                    return true;
+                }
+
+                previous = currentElement;
+                currentElement = currentElement.Next;
+            }
+
+            return false;
+        }
+
+        public int FirstIndexOf(T element)
+        {
+            Node<T> currentElement = head;
+            int currentIndex = 0;
+            while (currentElement!= null)
+            {
+                if (currentIndex == this.Count)
+                {
+                    return -1;
+                }
+                if (currentElement.Equals(element))
+                {
+                    break;
+                }
+                currentElement = currentElement.Next;
+                currentIndex++;
+            }
+            return currentIndex;
+        }
+
+        public int LastIndexOf(T element)
+        {
+            Node<T> currentElement = head;
+            int currentIndex = 0;
+            int found = 0;
+
+            while (currentElement != null)
+            {
+                if (currentIndex == this.Count)
+                {
+                    return -1;
+                }
+                if (currentElement.Equals(element))
+                {
+                    found = currentIndex;
+                }
+                currentElement = currentElement.Next;
+                currentIndex++;
+            }
+            return found;
+        }
+
+        public bool Contains(T element)
+        {
+            //if (this.FirstIndexOf(element) == -1)
+            //{
+            //    return false;
+            //}
+            //else return true;
+            return (this.FirstIndexOf(element) == -1) ? false : true;
+        }
+
+        public T[] ToArray()
+        {
+            T[] result = new T[this.Count];
+            Node<T> currentElement = Head;
+           
+            for (int i = 0; i < this.Count; i++)
+            {
+                result[i] = currentElement.Value;
+                currentElement = currentElement.Next;
+            }
+            return result;
+        }
+
+        public void ForEach(Action<T> action)
+        {
+            var currentNode = this.Head;
+            while (currentNode!=null)
+            {
+                action(currentNode.Value);
+                currentNode = currentNode.Next;
+            }
+        }
+
+        //public IEnumerable<T> GetEnumerator()
+        //{
+        //    var currentNode = this.Head;
+        //    while (currentNode.Next != null)
+        //    {
+        //        yield return currentNode.Value;
+        //        currentNode = currentNode.Next;
+        //    }
+        //}
+    }
+}
