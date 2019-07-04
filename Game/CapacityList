@@ -1,0 +1,89 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Game04._07._19
+{
+    class CapacityList
+    {
+        private const int InitialCapacity = 2;
+        private Pair[] items;
+
+        private int startIndex = 0; //показва първият индекс, от който започваме да сумираме текущите елементи
+        private int nextIndex = 0; //показва поредният индекс, на който можем да поставим елемент
+
+        public CapacityList(int capacity = InitialCapacity)
+        {
+            this.items = new Pair[capacity];
+        }
+
+        public int Count
+        {
+            get;
+            private set;
+        }
+
+        public static int InitialCapacity1 => InitialCapacity; 
+        internal Pair[] Items { get => items; set => items = value; }
+
+        public Pair SumIntervalPairs()
+        {
+            //TODO: сумирайте двойките от startIndex до nextIndex
+            int firstSum = 0;
+            int lastSum = 0;
+            for (int i = this.startIndex; i < this.nextIndex ; i++)
+            {
+                firstSum += items[i].First;
+                lastSum += items[i].Last;
+            }
+            return new Pair(firstSum, lastSum);
+        }
+
+        public Pair Sum()
+        {
+            //TODO: сумирайте двойките от 0 до this.Count – всички двойки, които имат право да участват в класирането
+            int firstSum = 0;
+            int lastSum = 0;
+            for (int i = 0; i < this.Count; i++)
+            {
+                firstSum += items[i].First;
+                lastSum += items[i].Last;
+            }
+            return new Pair(firstSum, lastSum);
+        }
+
+        public void Add(Pair item)
+        {
+            if (this.nextIndex== items.Length)
+            {
+                items[this.Count++] = SumIntervalPairs();
+                //this.Count++;
+                this.startIndex = this.Count;
+                this.nextIndex = this.Count;
+                
+                for (int i = startIndex; i < items.Length; i++)
+                {
+                    items[i] = new Pair(0,0);
+                }
+                items[nextIndex++] = item;
+                // this.nextIndex++;
+            }
+            else
+            {
+                items[nextIndex] = item;
+                this.nextIndex++;
+            }
+        }
+
+        public void PrintCurrentState()
+        {
+            //TODO: отпечатайте всички двойки от 0 до nextIndex
+            for (int i = 0; i < nextIndex; i++)
+            {
+                Console.WriteLine( this.items[i].ToString() );
+            }
+        }
+
+
+    }
+}
