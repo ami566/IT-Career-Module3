@@ -1,0 +1,158 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Exam
+{
+    class Parking
+    {
+        private Car head;
+        private Car tail;
+        private int count;
+
+        
+        internal Car Head { get => head; set => head = value; }
+        internal Car Tail { get => tail; set => tail = value; }
+        public int Count { get => count; set => count = value; }
+
+        public Parking()
+        {
+            this.Head = null;
+            this.Tail = null;
+            this.Count = 0;
+        }
+
+        public void AddCar(string carNumber)
+        {
+            Car carToAdd = new Car(carNumber);
+            if (this.Head==null)
+            {
+                this.Head = carToAdd;
+                this.Tail = carToAdd;
+                this.Count = 1;
+            }
+            else
+            {
+                this.Tail.Next = carToAdd;
+                tail = tail.Next;
+                this.Count++;
+            }
+        }
+
+
+
+        public void AddFancyCar(string carNumber)
+        {
+            Car fancyCarToAdd = new Car(carNumber);
+            fancyCarToAdd.Next = head;
+            head = fancyCarToAdd;
+            count++;
+        }
+
+
+
+        public Car CheckCarIsPresent(string carNumber)
+        {
+            Car currentCar = this.Head;
+            while (currentCar != null)
+            {
+                if (currentCar.CarNumber==carNumber)
+                {
+                    return currentCar;
+                }
+                currentCar = currentCar.Next;
+            }
+            return null;
+        }
+
+        public bool ReleaseCar(string carNumber)
+        {
+            Car currentCar = head;
+            Car previus = null;
+
+            while (currentCar.CarNumber != carNumber)
+            {
+                if (currentCar == tail)
+                {
+                    return false;
+                }
+                previus = currentCar;
+                currentCar = currentCar.Next;
+            }
+            if (currentCar == head)
+            {
+                head = head.Next;
+                count--;
+                return true;
+            }
+            else if (currentCar == tail)
+            {
+                previus.Next = null;
+                tail = previus;
+                count--;
+                return true;
+            }
+            else
+            {
+                previus.Next = currentCar.Next;
+                count--;
+                return true;
+            }
+        }
+          
+        public bool ReleaseCar(int index)
+        {
+            if ((index < 0) || (index >= Count) || (Count == 0))
+            {
+                return false;
+            }
+            if (index == 0)
+            {
+                head = head.Next;
+                count--;
+            }
+            else
+            {
+                int currentIndex = 0;
+                Car currentCar = head;
+                Car previous = null;
+                while (currentIndex < index)
+                {
+                    previous = currentCar;
+                    currentIndex++;
+                    currentCar = currentCar.Next;
+                }
+                previous.Next = currentCar.Next;
+                count--;
+
+                if (index == Count - 1)
+                {
+                    tail = previous;
+                }
+            }
+            return true;
+        }
+
+
+
+        public StringBuilder ParkingInformation()
+        {
+            StringBuilder info = new StringBuilder();
+            if (head==null)
+            {
+                info.Append("Parking is empty!");
+            }
+            else
+            {
+                Car currentCar = this.Head;
+                while (currentCar!=null)
+                {
+                    info.Append(currentCar.ToString());
+                    currentCar = currentCar.Next;
+                }
+            }
+            return info;
+           
+        }
+    }
+}
